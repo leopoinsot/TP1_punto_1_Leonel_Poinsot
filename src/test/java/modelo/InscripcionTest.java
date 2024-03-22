@@ -13,9 +13,9 @@ class InscripcionTest {
 	@Test
 	void inscribirAEn() {
 		// Caso de prueba 1: Un participante se inscribe en un concurso
-		Concurso concurso = new Concurso("objetos2", LocalDate.now().minusDays(2), LocalDate.now().plusDays(3));
-		
-		Participante participante = new Participante("45260989", "Leonel", "Poinsot");
+		var concurso = new Concurso("objetos2", LocalDate.now().minusDays(2), LocalDate.now().plusDays(3));
+
+		var participante = new Participante("45260989", "Leonel", "Poinsot");
 
 		Inscripcion.inscribirAEn(participante, concurso);
 
@@ -26,9 +26,9 @@ class InscripcionTest {
 	@Test
 	void inscribirPrimerDia() throws PuntajeNoExisteException {
 		// Caso de prueba 2: Un participante se inscribe en un concurso el primer día de abierta la inscripción
-		Concurso concurso = new Concurso("objetos2", LocalDate.now(), LocalDate.now().plusDays(3));
+		var concurso = new Concurso("objetos2", LocalDate.now(), LocalDate.now().plusDays(3));
 
-		Participante participante = new Participante("45260989", "Leonel", "Poinsot");
+		var participante = new Participante("45260989", "Leonel", "Poinsot");
 
 		Inscripcion.inscribirAEn(participante, concurso);
 
@@ -39,9 +39,9 @@ class InscripcionTest {
 	@Test
 	void inscribirFueraDeRango() {
 		// Caso de prueba 3: Un participante intenta inscribirse fuera del rango de inscripción
-		Concurso concurso = new Concurso("objetos2", LocalDate.now().minusDays(5), LocalDate.now().minusDays(2));
+		var concurso = new Concurso("objetos2", LocalDate.now().minusDays(5), LocalDate.now().minusDays(2));
 
-		Participante participante = new Participante("45260989", "Leonel", "Poinsot");
+		var participante = new Participante("45260989", "Leonel", "Poinsot");
 
 		// Verificación de que se lanza una excepción cuando el participante intenta inscribirse fuera del rango
 		assertThrows(FechaCierreInscripcionFinalizadaException.class, () -> {

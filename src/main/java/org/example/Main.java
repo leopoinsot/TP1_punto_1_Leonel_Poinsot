@@ -12,13 +12,13 @@ public class Main {
 	public static void main(String[] args) {
 
 		//-----------------Inscribir participante iniciada la fecha de cierre de inscripcion--------------------
-		Concurso concurso = new Concurso("objetos2", LocalDate.now(), LocalDate.now().plusDays(3));
-		Participante participante = new Participante("45260989", "Leonel", "Poinsot");
+		var concurso = new Concurso("objetos2", LocalDate.now(), LocalDate.now().plusDays(3));
+		var participante = new Participante("45260989", "Leonel", "Poinsot");
 		Inscripcion.inscribirAEn(participante, concurso);
 		concurso.obtenerCantidadPuntosDeUn(participante);
 
 		//-----------------Inscribir participante finalizada la fecha de cierre de inscripcion--------------------
-		Concurso concursonNuevo = new Concurso("objetos1", LocalDate.now().minusDays(7), LocalDate.now().minusDays(1));
+		var concursonNuevo = new Concurso("objetos1", LocalDate.now().minusDays(7), LocalDate.now().minusDays(1));
 		Inscripcion.inscribirAEn(participante, concursonNuevo);
 	}
 }
