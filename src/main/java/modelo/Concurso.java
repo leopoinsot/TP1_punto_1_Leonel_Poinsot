@@ -64,4 +64,9 @@ public class Concurso {
 	public int obtenerCantidadInscriptos() {
 		return listadoInscriptos.size();
 	}
+
+	public String obtenerCodigoDenominacion() {
+		return this.codigoDenominacion;
+	}
+
 }

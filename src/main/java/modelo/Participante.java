@@ -13,4 +13,8 @@ public class Participante {
 		this.nombre = nombre;
 		this.apellido = apellido;
 	}
+
+	public String obtenerDni() {
+		return this.dni;
+	}
 }
