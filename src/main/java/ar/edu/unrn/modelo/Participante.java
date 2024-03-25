@@ -1,4 +1,4 @@
-package modelo;
+package ar.edu.unrn.modelo;
 
 import java.util.Objects;
 
@@ -12,6 +12,11 @@ public class Participante {
 		this.dni = dni;
 		this.nombre = nombre;
 		this.apellido = apellido;
+	}
+
+	public Participante(String dni) {
+		super();
+		this.dni = dni;
 	}
 
 	public String obtenerDni() {

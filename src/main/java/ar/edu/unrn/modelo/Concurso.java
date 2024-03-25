@@ -1,6 +1,6 @@
-package modelo;
+package ar.edu.unrn.modelo;
 
-import excepciones.PuntajeNoExisteException;
+import ar.edu.unrn.excepciones.PuntajeNoExisteException;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -19,6 +19,11 @@ public class Concurso {
 		this.fechaCierreInscripcion = fechaCierreInscripcion;
 		this.listadoInscriptos = new ArrayList();
 		this.listadoPuntajes = new ArrayList();
+	}
+
+	public Concurso(String codigoDenominacion) {
+		super();
+		this.codigoDenominacion = codigoDenominacion;
 	}
 
 	public boolean fechaSeEncuentraDentroDelPeriodoInscripcion(LocalDate fecha) {
@@ -66,7 +71,8 @@ public class Concurso {
 	}
 
 	public String obtenerCodigoDenominacion() {
-		return this.codigoDenominacion;
+		String codigoDenominacion = this.codigoDenominacion;
+		return codigoDenominacion;
 	}
 
 }

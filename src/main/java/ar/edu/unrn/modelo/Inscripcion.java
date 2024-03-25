@@ -1,10 +1,9 @@
-package modelo;
+package ar.edu.unrn.modelo;
 
-import excepciones.FechaCierreInscripcionFinalizadaException;
-import persistencia.RegistrarInscripcionDisco;
+import ar.edu.unrn.api.IApi;
+import ar.edu.unrn.excepciones.FechaCierreInscripcionFinalizadaException;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -14,14 +13,6 @@ public class Inscripcion {
 	private Participante participante;
 	private Concurso concurso;
 
-	public Inscripcion(LocalDate fecha, LocalTime hora, Participante participante, Concurso concurso, RegistroInscripcion registroInscripcion) {
-		super();
-		this.fecha = fecha;
-		this.hora = hora;
-		this.participante = participante;
-		this.concurso = concurso;
-	}
-
 	public Inscripcion(LocalDate fecha, LocalTime hora, Participante participante, Concurso concurso) {
 		super();
 		this.fecha = fecha;
@@ -30,7 +21,7 @@ public class Inscripcion {
 		this.concurso = concurso;
 	}
 
-	public static void inscribirAEn(Participante participante, Concurso concurso, RegistroInscripcion registroInscripcion) throws FechaCierreInscripcionFinalizadaException, IOException {
+	public static void inscribirAEn(Participante participante, Concurso concurso, IApi registroInscripcion) throws FechaCierreInscripcionFinalizadaException, IOException {
 		LocalDate fechaActual = LocalDate.now();
 		if (concurso.fechaSeEncuentraDentroDelPeriodoInscripcion(fechaActual)) {
 			var horaActual = LocalTime.now();
@@ -45,10 +36,30 @@ public class Inscripcion {
 				concurso.agregarUna(inscripcion);
 				concurso.agregarUn(puntaje);
 			}
-			registroInscripcion.registrar(FormatoFecha.aplicarFormatoEuropeo(fechaActual), horaActual.toString(), participante.obtenerDni(), concurso.obtenerCodigoDenominacion());
+			registroInscripcion.registrar(fechaActual, horaActual, participante.obtenerDni(), concurso.obtenerCodigoDenominacion());
 
 		} else {
 			throw new FechaCierreInscripcionFinalizadaException("La fecha de cierre de inscripcion ah finalizado");
 		}
+	}
+
+	public String obtenerDniParticipante() {
+		String dniParticipante = this.participante.obtenerDni();
+		return dniParticipante;
+	}
+
+	public String obtenerCodigoDenominacionConcurso() {
+		String codigoDenominacionConcurso = this.concurso.obtenerCodigoDenominacion();
+		return codigoDenominacionConcurso;
+	}
+
+	public LocalDate obtenerFecha() {
+		LocalDate fecha = this.fecha;
+		return fecha;
+	}
+
+	public LocalTime obtenerHora() {
+		LocalTime hora = this.hora;
+		return hora;
 	}
 }

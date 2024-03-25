@@ -1,13 +1,13 @@
-package modelo;
+package ar.edu.unrn.modelo;
 
-import excepciones.FechaCierreInscripcionFinalizadaException;
-import excepciones.PuntajeNoExisteException;
+import ar.edu.unrn.api.PersistenceApi;
+import ar.edu.unrn.excepciones.FechaCierreInscripcionFinalizadaException;
+import ar.edu.unrn.excepciones.PuntajeNoExisteException;
 import org.junit.jupiter.api.Test;
-import persistencia.RegistrarInscripcionDisco;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,12 +19,12 @@ class InscripcionTest {
 		var concurso = new Concurso("objetos2", LocalDate.now().minusDays(2), LocalDate.now().plusDays(3));
 
 		var participante = new Participante("45260989", "Leonel", "Poinsot");
-
-		var registro = new RegistroInscripcion() {
+		
+		var registro = new PersistenceApi() {
 			boolean seLlamo = false;
 
 			@Override
-			public void registrar(String fecha, String hora, String dni, String codigoDenominacion) throws IOException {
+			public void registrar(LocalDate fecha, LocalTime hora, String dni, String codigoDenominacion) throws IOException {
 				seLlamo = true;
 			}
 
@@ -47,11 +47,11 @@ class InscripcionTest {
 
 		var participante = new Participante("45260989", "Leonel", "Poinsot");
 
-		var registro = new RegistroInscripcion() {
+		var registro = new PersistenceApi() {
 			boolean seLlamo = false;
 
 			@Override
-			public void registrar(String fecha, String hora, String dni, String codigoDenominacion) throws IOException {
+			public void registrar(LocalDate fecha, LocalTime hora, String dni, String codigoDenominacion) throws IOException {
 				seLlamo = true;
 			}
 
@@ -74,11 +74,11 @@ class InscripcionTest {
 
 		var participante = new Participante("45260989", "Leonel", "Poinsot");
 
-		var registro = new RegistroInscripcion() {
+		var registro = new PersistenceApi() {
 			boolean seLlamo = false;
 
 			@Override
-			public void registrar(String fecha, String hora, String dni, String codigoDenominacion) throws IOException {
+			public void registrar(LocalDate fecha, LocalTime hora, String dni, String codigoDenominacion) throws IOException {
 				seLlamo = true;
 			}
 

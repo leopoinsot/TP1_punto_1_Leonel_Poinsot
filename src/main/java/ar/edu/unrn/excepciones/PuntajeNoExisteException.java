@@ -1,4 +1,4 @@
-package excepciones;
+package ar.edu.unrn.excepciones;
 
 import javax.management.RuntimeMBeanException;
 
