@@ -3,6 +3,7 @@ package ar.edu.unrn.modelo;
 import ar.edu.unrn.api.PersistenceApi;
 import ar.edu.unrn.excepciones.FechaCierreInscripcionFinalizadaException;
 import ar.edu.unrn.excepciones.PuntajeNoExisteException;
+import jakarta.mail.MessagingException;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -14,12 +15,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class InscripcionTest {
 
 	@Test
-	void inscribirAEn() throws IOException {
+	void inscribirAEn() throws IOException, MessagingException {
 		// Caso de prueba 1: Un participante se inscribe en un concurso
 		var concurso = new Concurso("objetos2", LocalDate.now().minusDays(2), LocalDate.now().plusDays(3));
 
 		var participante = new Participante("45260989", "Leonel", "Poinsot");
-		
+
 		var registro = new PersistenceApi() {
 			boolean seLlamo = false;
 
@@ -34,14 +35,26 @@ class InscripcionTest {
 		};
 
 		Inscripcion.inscribirAEn(participante, concurso, registro);
+		var email = new Email("src/main/java/configuracion/email/datosEmail.properties") {
+			private boolean seEnvioEmail = false;
 
+			public void enviarEmail(String asunto, String mensaje, String correo) throws MessagingException {
+				seEnvioEmail = true;
+			}
+
+			public boolean seEnvioEmail() {
+				return seEnvioEmail;
+			}
+		};
+		email.enviarEmail("Test", "hola mundo", "leonrojopoinsot@gmail.com");
+		assertTrue(email.seEnvioEmail());
 		// Verificación de que el participante se ha inscrito correctamente
 		assertEquals(1, concurso.obtenerCantidadInscriptos());
 		assertTrue(registro.isSeLlamo());
 	}
 
 	@Test
-	void inscribirPrimerDia() throws PuntajeNoExisteException, IOException {
+	void inscribirPrimerDia() throws PuntajeNoExisteException, IOException, MessagingException {
 		// Caso de prueba 2: Un participante se inscribe en un concurso el primer día de abierta la inscripción
 		var concurso = new Concurso("objetos2", LocalDate.now(), LocalDate.now().plusDays(3));
 
@@ -61,6 +74,21 @@ class InscripcionTest {
 		};
 
 		Inscripcion.inscribirAEn(participante, concurso, registro);
+
+		var email = new Email("src/main/java/configuracion/email/datosEmail.properties") {
+			private boolean seEnvioEmail = false;
+
+			public void enviarEmail(String asunto, String mensaje, String correo) throws MessagingException {
+				seEnvioEmail = true;
+			}
+
+			public boolean seEnvioEmail() {
+				return seEnvioEmail;
+			}
+		};
+
+		email.enviarEmail("Test", "hola mundo", "leonrojopoinsot@gmail.com");
+		assertTrue(email.seEnvioEmail());
 
 		// Verificación de que el participante ha ganado 10 puntos por inscribirse el primer día
 		assertEquals(10, concurso.obtenerCantidadPuntosDeUn(participante));
