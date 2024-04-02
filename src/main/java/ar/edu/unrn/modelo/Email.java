@@ -1,41 +1,47 @@
 package ar.edu.unrn.modelo;
 
-import jakarta.mail.Message;
-import jakarta.mail.MessagingException;
-import jakarta.mail.Transport;
-import jakarta.mail.internet.AddressException;
-import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeMessage;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
-import jakarta.mail.Session;;
-
 public class Email {
-	private Properties properties;
-	private Session session;
+	private final String host;
+	private final String port;
+	private final String username;
+	private final String password;
 
-	public Email(String ruta) throws IOException {
-		this.properties = new Properties();
-		loadConfig(ruta);
+	public Email(String host, String port, String username, String password) {
+		this.host = host;
+		this.port = port;
+		this.username = username;
+		this.password = password;
 	}
 
-	public void loadConfig(String ruta) throws IOException {
-		InputStream is = new FileInputStream(ruta);
-		this.properties.load(is);
-	}
+	public void enviarEmail(String destinatarioEmail, String asunto, String tema) {
+		Properties props = new Properties();
+		props.put("mail.smtp.host", host);
+		props.put("mail.smtp.port", port);
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
 
-	public void enviarEmail(String asunto, String mensaje, String correo) throws MessagingException {
-		MimeMessage contenedor = new MimeMessage(session);
-		contenedor.setFrom(new InternetAddress((String) this.properties.get("mail.smtp.user")));
-		contenedor.addRecipients(Message.RecipientType.TO, String.valueOf(new InternetAddress(correo)));
-		contenedor.setSubject(asunto);
-		contenedor.setText(mensaje);
-		Transport t = session.getTransport("smtp");
-		t.connect((String) this.properties.get("mail.smtp.user"), (String) this.properties.get("mail.smtp.password"));
-		t.sendMessage(contenedor, contenedor.getAllRecipients());
+		Session session = Session.getInstance(props, new Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		});
+
+		try {
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(username));
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatarioEmail));
+			message.setSubject(asunto);
+			message.setText(tema);
+
+			Transport.send(message);
+
+		} catch (MessagingException e) {
+			throw new RuntimeException("Error al enviar el correo electrónico: " + e.getMessage());
+		}
 	}
 }

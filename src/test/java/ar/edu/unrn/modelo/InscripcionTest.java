@@ -35,10 +35,10 @@ class InscripcionTest {
 		};
 
 		Inscripcion.inscribirAEn(participante, concurso, registro);
-		var email = new Email("src/main/java/configuracion/email/datosEmail.properties") {
+		var email = new Email("smtp.mailtrap.io", "2525", "1d8884f5484749", "ccb6e88c2f65a1") {
 			private boolean seEnvioEmail = false;
 
-			public void enviarEmail(String asunto, String mensaje, String correo) throws MessagingException {
+			public void enviarEmail(String destinatarioEmail, String asunto, String tema) {
 				seEnvioEmail = true;
 			}
 
@@ -46,7 +46,7 @@ class InscripcionTest {
 				return seEnvioEmail;
 			}
 		};
-		email.enviarEmail("Test", "hola mundo", "leonrojopoinsot@gmail.com");
+		email.enviarEmail("leonrojopoinsot@gmail.com", "Practica 2 objetos II", "hola mundo");
 		assertTrue(email.seEnvioEmail());
 		// Verificación de que el participante se ha inscrito correctamente
 		assertEquals(1, concurso.obtenerCantidadInscriptos());
@@ -75,10 +75,10 @@ class InscripcionTest {
 
 		Inscripcion.inscribirAEn(participante, concurso, registro);
 
-		var email = new Email("src/main/java/configuracion/email/datosEmail.properties") {
+		var email = new Email("smtp.mailtrap.io", "2525", "1d8884f5484749", "ccb6e88c2f65a1") {
 			private boolean seEnvioEmail = false;
 
-			public void enviarEmail(String asunto, String mensaje, String correo) throws MessagingException {
+			public void enviarEmail(String destinatarioEmail, String asunto, String tema) {
 				seEnvioEmail = true;
 			}
 
@@ -87,7 +87,7 @@ class InscripcionTest {
 			}
 		};
 
-		email.enviarEmail("Test", "hola mundo", "leonrojopoinsot@gmail.com");
+		email.enviarEmail("leonrojopoinsot@gmail.com", "Practica 2 objetos II", "hola mundo");
 		assertTrue(email.seEnvioEmail());
 
 		// Verificación de que el participante ha ganado 10 puntos por inscribirse el primer día

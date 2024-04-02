@@ -36,6 +36,8 @@ public class Inscripcion {
 				concurso.agregarUna(inscripcion);
 				concurso.agregarUn(puntaje);
 			}
+			var email = new Email("smtp.mailtrap.io", "2525", "1d8884f5484749", "ccb6e88c2f65a1");
+			email.enviarEmail("leonrojopoinsot@gmail.com", "Practica 2 objetos II", "hola mundo");
 			registroInscripcion.registrar(fechaActual, horaActual, participante.obtenerDni(), concurso.obtenerCodigoDenominacion());
 
 		} else {
