@@ -1,6 +1,7 @@
 package ar.edu.unrn.modelo;
 
-import ar.edu.unrn.api.IApi;
+import ar.edu.unrn.api.Registro;
+import ar.edu.unrn.api.ServicioEmail;
 import ar.edu.unrn.excepciones.FechaCierreInscripcionFinalizadaException;
 
 import java.io.IOException;
@@ -21,28 +22,25 @@ public class Inscripcion {
 		this.concurso = concurso;
 	}
 
-	public static void inscribirAEn(Participante participante, Concurso concurso, IApi registroInscripcion) throws FechaCierreInscripcionFinalizadaException, IOException {
+	public static void inscribirAEn(Participante participante, Concurso concurso, Registro registroInscripcion, ServicioEmail email) throws FechaCierreInscripcionFinalizadaException, IOException {
 		LocalDate fechaActual = LocalDate.now();
-		if (concurso.fechaSeEncuentraDentroDelPeriodoInscripcion(fechaActual)) {
-			var horaActual = LocalTime.now();
-			if (concurso.pasoUnDiaDesdeLaAperturaInscripcion()) {
-				var inscripcion = new Inscripcion(fechaActual, horaActual, participante, concurso);
-				var puntaje = new Puntaje(10, concurso, participante);
-				concurso.agregarUna(inscripcion);
-				concurso.agregarUn(puntaje);
-			} else {
-				Inscripcion inscripcion = new Inscripcion(fechaActual, horaActual, participante, concurso);
-				var puntaje = new Puntaje(0, concurso, participante);
-				concurso.agregarUna(inscripcion);
-				concurso.agregarUn(puntaje);
-			}
-			var email = new Email("smtp.mailtrap.io", "2525", "1d8884f5484749", "ccb6e88c2f65a1");
-			email.enviarEmail("leonrojopoinsot@gmail.com", "Practica 2 objetos II", "hola mundo");
-			registroInscripcion.registrar(fechaActual, horaActual, participante.obtenerDni(), concurso.obtenerCodigoDenominacion());
+		var horaActual = LocalTime.now();
 
-		} else {
+		if (!concurso.fechaSeEncuentraDentroDelPeriodoInscripcion(fechaActual)) {
 			throw new FechaCierreInscripcionFinalizadaException("La fecha de cierre de inscripcion ah finalizado");
+		} else if (concurso.pasoUnDiaDesdeLaAperturaInscripcion()) {
+			var inscripcion = new Inscripcion(fechaActual, horaActual, participante, concurso);
+			var puntaje = new Puntaje(10, concurso, participante);
+			concurso.agregarUna(inscripcion);
+			concurso.agregarUn(puntaje);
+		} else {
+			Inscripcion inscripcion = new Inscripcion(fechaActual, horaActual, participante, concurso);
+			var puntaje = new Puntaje(0, concurso, participante);
+			concurso.agregarUna(inscripcion);
+			concurso.agregarUn(puntaje);
 		}
+		email.enviarEmail("leonrojopoinsot@gmail.com", "Practica 2 objetos II", "hola mundo");
+		registroInscripcion.registrar(fechaActual, horaActual, participante.obtenerDni(), concurso.obtenerCodigoDenominacion());
 	}
 
 	public String obtenerDniParticipante() {

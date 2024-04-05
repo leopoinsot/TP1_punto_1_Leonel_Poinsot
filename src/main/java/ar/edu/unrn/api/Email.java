@@ -1,11 +1,11 @@
-package ar.edu.unrn.modelo;
+package ar.edu.unrn.api;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
-public class Email {
+public class Email implements ServicioEmail {
 	private final String host;
 	private final String port;
 	private final String username;

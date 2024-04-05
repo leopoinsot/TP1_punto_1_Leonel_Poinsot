@@ -9,7 +9,7 @@ import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class MemoryApi implements IApi {
+public class MemoryApi implements Registro {
 
 	@Override
 	public void registrar(LocalDate fecha, LocalTime hora, String dni, String codigoDenominacion) throws IOException {

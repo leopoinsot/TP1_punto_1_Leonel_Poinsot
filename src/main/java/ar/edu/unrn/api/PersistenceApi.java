@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class PersistenceApi implements IApi {
+public class PersistenceApi implements Registro {
 	private InscripcionDAO inscripcionDAO = new InscripcionDAOJDBC();
 
 	@Override

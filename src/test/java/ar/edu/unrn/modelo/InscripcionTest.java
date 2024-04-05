@@ -1,5 +1,6 @@
 package ar.edu.unrn.modelo;
 
+import ar.edu.unrn.api.Email;
 import ar.edu.unrn.api.PersistenceApi;
 import ar.edu.unrn.excepciones.FechaCierreInscripcionFinalizadaException;
 import ar.edu.unrn.excepciones.PuntajeNoExisteException;
@@ -34,7 +35,6 @@ class InscripcionTest {
 			}
 		};
 
-		Inscripcion.inscribirAEn(participante, concurso, registro);
 		var email = new Email("smtp.mailtrap.io", "2525", "1d8884f5484749", "ccb6e88c2f65a1") {
 			private boolean seEnvioEmail = false;
 
@@ -46,6 +46,8 @@ class InscripcionTest {
 				return seEnvioEmail;
 			}
 		};
+
+		Inscripcion.inscribirAEn(participante, concurso, registro, email);
 		email.enviarEmail("leonrojopoinsot@gmail.com", "Practica 2 objetos II", "hola mundo");
 		assertTrue(email.seEnvioEmail());
 		// Verificación de que el participante se ha inscrito correctamente
@@ -73,8 +75,6 @@ class InscripcionTest {
 			}
 		};
 
-		Inscripcion.inscribirAEn(participante, concurso, registro);
-
 		var email = new Email("smtp.mailtrap.io", "2525", "1d8884f5484749", "ccb6e88c2f65a1") {
 			private boolean seEnvioEmail = false;
 
@@ -86,7 +86,7 @@ class InscripcionTest {
 				return seEnvioEmail;
 			}
 		};
-
+		Inscripcion.inscribirAEn(participante, concurso, registro, email);
 		email.enviarEmail("leonrojopoinsot@gmail.com", "Practica 2 objetos II", "hola mundo");
 		assertTrue(email.seEnvioEmail());
 
@@ -114,10 +114,20 @@ class InscripcionTest {
 				return seLlamo;
 			}
 		};
+		var email = new Email("smtp.mailtrap.io", "2525", "1d8884f5484749", "ccb6e88c2f65a1") {
+			private boolean seEnvioEmail = false;
 
+			public void enviarEmail(String destinatarioEmail, String asunto, String tema) {
+				seEnvioEmail = true;
+			}
+
+			public boolean seEnvioEmail() {
+				return seEnvioEmail;
+			}
+		};
 		// Verificación de que se lanza una excepción cuando el participante intenta inscribirse fuera del rango
 		assertThrows(FechaCierreInscripcionFinalizadaException.class, () -> {
-			Inscripcion.inscribirAEn(participante, concurso, registro);
+			Inscripcion.inscribirAEn(participante, concurso, registro, email);
 		});
 		assertFalse(registro.isSeLlamo());
 	}
